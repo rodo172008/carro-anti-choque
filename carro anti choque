@@ -1,0 +1,60 @@
+
+#define trig 12   
+#define echo 11   
+long duration, cm, inch; 
+int IN1 = 3;
+int IN2 = 5;
+int IN3 = 6;
+int IN4 = 9;
+
+void setup(){
+  
+  Serial.begin (9600);
+  pinMode (trig, OUTPUT);
+  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode (echo, INPUT);
+}
+
+void loop(){ //La función loop se ejecuta infinitamente 
+  //delayMicroseconds (tiempo en us)
+  //pulseIn (pin, estado)
+  
+  digitalWrite (trig, LOW); //Mandar un 0 logico para asegurara una señal limpia
+  delay(5);
+  digitalWrite (trig, HIGH);  //Mandar 1 logi
+  delay(5);
+
+  digitalWrite (trig, LOW); //Mandar un 0 logico para terminar la emision de la señal
+  duration = pulseIn (echo, HIGH); //Tiempo en que un pin cambia de estado
+  
+  //Convertir el tiempo a distancia
+  
+  cm = (duration/2) * 0.0343;   //Distancia en cm
+  Serial.print(cm);         //Imprimir la distancia en centimetros
+  Serial.print("cm");       //Imprimir las unidades
+  delay(100);
+  /////////////////////////////////////////////////////////////
+  ////////////////////////MOTORES PWM//////////////////////////
+  /////////////////////////////////////////////////////////////
+  analogWrite( IN1, 0);
+  analogWrite( IN2, 215);
+  analogWrite( IN3, 0);
+  analogWrite( IN4, 200);
+  /////////////////////////////////////////////////////////////
+  ///////////////CONFIGURACION DE LED Y MOTORES////////////////
+  /////////////////////////////////////////////////////////////
+if( cm < 20 ){
+   digitalWrite(LED_BUILTIN, HIGH);
+   analogWrite( IN1, 200);
+   analogWrite( IN2, 0);
+   analogWrite( IN3, 0);
+   analogWrite( IN4, 0);
+   delay(200);
+  }
+else if( cm > 20){
+   digitalWrite(LED_BUILTIN, LOW);
+
+}
+}
+
+
